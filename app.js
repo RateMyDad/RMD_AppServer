@@ -22,3 +22,7 @@ app.use(cors())
 app.use(cookie())
 
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
+
+app.get("/", function(req, res) {
+  res.render("index");
+});
