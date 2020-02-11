@@ -1,0 +1,24 @@
+{
+  "name": "rmd_appserver",
+  "version": "1.0.0",
+  "description": "Rate My Dad App Server",
+  "main": "app.js",
+  "scripts": {
+    "run": "sudo node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RateMyDad/RMD_AppServer.git"
+  },
+  "author": "nwnorris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RateMyDad/RMD_AppServer/issues"
+  },
+  "homepage": "https://github.com/RateMyDad/RMD_AppServer#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
