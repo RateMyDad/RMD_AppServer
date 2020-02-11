@@ -1,2 +1,2 @@
 # RMD_AppServer
-npm run run
+To launch: npm run run
