@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 var router = express.Router();
 var cors = require('cors');
-var cookie = require('cookie-parser');
 const port = 82;
 
+//---MONGOOSE & MONGODB SETUP---//
 var mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost/ratemydad", {useNewUrlParser: true});
 var db = mongoose.connection
@@ -15,27 +15,26 @@ db.once('open', function(){
 
 const DadProfile = require('./DadProfile');
 
-//IO config
-//EJS config
+//---Set view engine & directory mappings (if sending HTML pages)---//
 app.set('view engine', 'ejs');
 app.set('views', './views');
-
-//Json and directory config
-app.use(express.json());
 app.use('/js', express.static(__dirname + '/src/js/'));
 app.use('/css', express.static(__dirname + '/src/css/'));
 app.use('/font', express.static(__dirname + '/src/font/'));
 app.use('/img', express.static(__dirname + '/src/img/'));
 
-//Other config
-app.use(cors())
+//---Other misc config---//
+app.use(express.json());
 app.use(cookie())
 
+//---Enable routing for configured endpoints---///
 app.use("/", router);
 app.use("/dad_profile/create", router);
 
+//Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
 
+///---DAD_PROFILE:CREATE (POST)---///
 router.post("/dad_profile/create", function(req, res, next) {
   var params = req.body.params;
   var name = params.name
@@ -53,17 +52,13 @@ router.post("/dad_profile/create", function(req, res, next) {
 
 })
 
+///---INDEX (POST)---///
+//Currently for testing, provide a dad first name in body.params and it returns a matching dad from DB
 router.post("/", function(req, res, next) {
 
   var params = req.body.params
 
   console.log("Params: " + params)
-
-  // var dad = new DadProfile({
-  //   name: {first: "Bill", last: "Buttworth"}, skills: {grill: 3.4, bags: 4.5}
-  // });
-
-  //dad.save()
 
   DadProfile.find({'name.first': params.name.first}, function(err, docs) {
     res.send(docs)
