@@ -29,21 +29,48 @@ app.use("/user/login", router);
 //Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
 
+async function user_exists(username) {
+  var user = await User.findOne({"username": username}).exec();
+  console.log("[user_exists] " + username + ": " + (user != null))
+  return (user != null)
+}
+
 ///---DAD_PROFILE:CREATE (POST)---///
-router.post("/dad_profile/create", function(req, res, next) {
-  var params = req.body.params;
-  var name = params.name
+router.post("/dad_profile/create", async function(req, res, next) {
 
-  if(name.first != undefined && name.last != undefined) {
-    console.log("recieved request to create: " + name.first + " " + name.last);
+  if(req.body.username != undefined) {
+
+    if(await user_exists(req.body.username)) {
+      console.log("User exists?")
+      if(req.body.name.first != undefined && req.body.name.last != undefined) {
+        console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last);
+
+        var dad = new DadProfile({
+          name: {first: req.body.name.first, last: req.body.name.last}, skills : {grill: 3, bags: 3}
+        });
+
+        console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
+        var user_toLink = await User.findOne({"username": req.body.username}).exec();
+
+        console.log(dad._id);
+        user_toLink.profile.parent_profile = dad._id;
+        console.log(user_toLink);
+        dad.save();
+        user_toLink.save();
+        res.send(dad)
+
+
+      } else {
+        res.status(400).send({message: "Missing first and last name."});
+      }
+
+    } else {
+      res.status(400).send({message: "User not found."});
+    }
+
+  } else {
+    res.status(400).send({message: "Must link a profile with a username."});
   }
-
-  var dad = new DadProfile({
-    name: {first: name.first, last: name.last}, skills : {grill: 3, bags: 3}
-  });
-
-  dad.save()
-  res.send(dad)
 
 })
 
@@ -71,9 +98,16 @@ router.post("/user/register", async function(req, res, next) {
       var user = User.findOne({ "username": req.body.username }).exec(function(err, result) {
         if(result == undefined) {
           req.body.password = bcrypt.hashSync(req.body.password, 10);
-          var user = new User(req.body);
+          var user = new User({
+            "username": req.body.username,
+            "password": req.body.password,
+            "profile": {
+              "parent_profile": null,
+              "user_profile": null
+            }
+          });
           var result = user.save();
-          res.status(200).send({message: "Successfully registered."});
+          res.status(200).send(user);
         } else {
           res.status(400).send({message: "Username taken."})
         }
@@ -89,6 +123,7 @@ router.post("/user/register", async function(req, res, next) {
 
 ///---USER:LOGIN (POST)---///
 router.post("/user/login", async function(req, res, next) {
+  
   try {
     console.log("/login " + req.body.username)
     var user = await User.findOne({ "username": req.body.username }).exec()
@@ -104,7 +139,7 @@ router.post("/user/login", async function(req, res, next) {
     }
 
     //If you get here, successful login
-    return res.status(200).send({message: "Logged in."});
+    return res.status(200).send(user);
 
   } catch (error) {
     console.log(error);
