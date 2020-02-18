@@ -17,14 +17,6 @@ db.once('open', function(){
 const DadProfile = require('./models/DadProfile');
 const User = require('./models/User');
 
-//---Set view engine & directory mappings (if sending HTML pages)---//
-app.set('view engine', 'ejs');
-app.set('views', './views');
-app.use('/js', express.static(__dirname + '/src/js/'));
-app.use('/css', express.static(__dirname + '/src/css/'));
-app.use('/font', express.static(__dirname + '/src/font/'));
-app.use('/img', express.static(__dirname + '/src/img/'));
-
 //---Other misc config---//
 app.use(express.json());
 
