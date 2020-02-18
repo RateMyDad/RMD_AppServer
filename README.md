@@ -1,7 +1,7 @@
 # RMD_AppServer
 To launch: npm run run
 
-**API Endpoint Descriptions**
+##**API Endpoint Descriptions**
 
 **/user/register**
 
@@ -16,6 +16,7 @@ Required body parameters:
 ```
 
 **/user/login**
+
 Currently just validates the password. Returns the user account on successful creation.
 
 Required body parameters:
@@ -27,6 +28,7 @@ Required body parameters:
 ```
 
 **/dad_profile/create**
+
 Creates a new dad profile. You must have a user account to do this, and you can only create a profile for your dad (not yourself). Links the dad profile to the user account.
 Returns the new dad profile upon successful creation.
 
