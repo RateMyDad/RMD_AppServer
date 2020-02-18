@@ -3,6 +3,7 @@ const app = express();
 var router = express.Router();
 var cors = require('cors');
 var bcrypt = require('bcrypt');
+var session = require('express-session');
 const port = 82;
 
 //---MONGOOSE & MONGODB SETUP---//
@@ -19,7 +20,7 @@ const User = require('./models/User');
 
 //---Other misc config---//
 app.use(express.json());
-
+app.use(session({ secret: 'peepeepoopoomommygrandma', cookie: { maxAge: 60000}, username: undefined}));
 //---Enable routing for configured endpoints---///
 app.use("/", router);
 app.use("/dad_profile/create", router);
@@ -146,29 +147,45 @@ router.post("/user/register", async function(req, res, next) {
 
 });
 
+///---USER:LOGOUT (GET)---///
+router.get("/user/logout", async function(req, res, next) {
+  if(req.session.username == undefined) {
+    res.status(400).send({message: "You are not logged in!"});
+  } else {
+    var user = req.session.username;
+    req.session.destroy();
+    res.status(200).send({messsage: "Sucessfully logged out " + user});
+  }
+})
+
 ///---USER:LOGIN (POST)---///
 router.post("/user/login", async function(req, res, next) {
+  if(req.session.username != undefined) {
+    res.status(200).send({message: "You are already logged in as " + req.session.username});
+  } else {
+    try {
+      console.log("/login " + req.body.username)
+      var user = await User.findOne({ "username": req.body.username }).exec()
 
-  try {
-    console.log("/login " + req.body.username)
-    var user = await User.findOne({ "username": req.body.username }).exec()
+      if(!user) {
+        //User does not exist
+        return res.status(400).send({message: "User not found"});
+      }
 
-    if(!user) {
-      //User does not exist
-      return res.status(400).send({message: "User not found"});
+      if(!bcrypt.compareSync(req.body.password, user.password)) {
+        //Bad password
+        return res.status(400).send({message: "Invalid login"});
+      }
+
+      //If you get here, successful login
+      req.session.username = req.body.username;
+      return res.status(200).send(user);
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+
     }
-
-    if(!bcrypt.compareSync(req.body.password, user.password)) {
-      //Bad password
-      return res.status(400).send({message: "Invalid login"});
-    }
-
-    //If you get here, successful login
-    return res.status(200).send(user);
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
 
   }
 })

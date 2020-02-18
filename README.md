@@ -51,8 +51,8 @@ Returns the new dad profile upon successful creation.
 Required body parameters:
 ```
 {
-	"username": "my_username",
-	"name" : {
+  "username": "my_username",
+  "name" : {
 
 		"first" : "John",
 		"last": "Doe"
