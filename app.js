@@ -31,6 +31,8 @@ app.use(express.json());
 //---Enable routing for configured endpoints---///
 app.use("/", router);
 app.use("/dad_profile/create", router);
+app.use("/user/register", router);
+app.use("/user/login", router);
 
 //Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
@@ -68,23 +70,33 @@ router.post("/", function(req, res, next) {
   //res.render("index");
 });
 
-router.post("/register", function(req, res, next) {
+///---USER:REGISTER (POST)---///
+router.post("/user/register", async function(req, res, next) {
+
   try {
 
     console.log("/register: " + req.body.username);
-    req.body.password = bcrypt.hashSync(req.body.password, 10);
-    var user = new User(req.body);
-    var result = user.save();
-    res.send(result);
+      var user = User.findOne({ "username": req.body.username }).exec(function(err, result) {
+        if(result == undefined) {
+          req.body.password = bcrypt.hashSync(req.body.password, 10);
+          var user = new User(req.body);
+          var result = user.save();
+          res.status(200).send({message: "Successfully registered."});
+        } else {
+          res.status(400).send({message: "Username taken."})
+        }
+      });
 
   } catch (error) {
 
     res.status(500).send(error)
 
   }
+
 });
 
-router.post("/login", async function(req, res, next) {
+///---USER:LOGIN (POST)---///
+router.post("/user/login", async function(req, res, next) {
   try {
     console.log("/login " + req.body.username)
     var user = await User.findOne({ "username": req.body.username }).exec()
