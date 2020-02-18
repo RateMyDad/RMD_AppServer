@@ -36,7 +36,7 @@ Sample user profile:
         "parent_profile": "5e4c207e34338c6ea74c5480",
         "user_profile": null
     },
-    "_id": "5e4c206d34338c6ea74c547f",
+    "_id": "5e4c206d34338c6ea7  4c547f",
     "username": "my_username",
     "password": "$2b$10$L97CleHGzojdcb409Yg.5uo9qwbNoacIpdpt9NgsGmwA65sLbDtnC",
     "__v": 0
@@ -51,12 +51,33 @@ Returns the new dad profile upon successful creation.
 Required body parameters:
 ```
 {
-  "username": "my_username",
+	"username": "my_username",
 	"name" : {
 
 		"first" : "John",
 		"last": "Doe"
 
+	},
+
+	"skills" : {
+		"grilling": 3,
+        "cooking": 3, 
+        "bags": 3,
+        "softball": 3,
+        "coaching": 3,
+        "generosity": 3,
+        "looks": 3,
+        "dad_factor": 3,
+        "fantasy_football": 3,
+        "humor": 3,
+        "emotional_stability": 3,
+        "handiness": 3,
+        "kids": 3,
+        "stealth_food_preparation": 3,
+        "tech": 3,
+        "furniture_assembly": 3,
+        "photography": 3
 	}
+
 }
 ```

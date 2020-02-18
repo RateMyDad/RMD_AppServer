@@ -39,40 +39,40 @@ async function user_exists(username) {
 
 
 router.post("/dad_profile/create", async function(req, res, next) {
-  
+
   if(req.body.username != undefined) {
 
     if(await user_exists(req.body.username)) {
 
       if(req.body.name.first != undefined && req.body.name.last != undefined) {
-        
+
         console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last)
         var skills = req.body.skills;
-        
+
         var dad = new DadProfile({
-          
+
           name: {
-            first: req.body.name.first, 
+            first: req.body.name.first,
             last: req.body.name.last
-          }, 
-          
+          },
+
           skills : {
-            grilling: skills.grilling, 
-            cooking: skills.cooking, 
-            bags: skills.bags, 
+            grilling: skills.grilling,
+            cooking: skills.cooking,
+            bags: skills.bags,
             softball: skills.softball,
             coaching: skills.coaching,
             generosity: skills.generosity,
-            looks: skills.looks, 
-            dad_factor: skills.dad_factor, 
+            looks: skills.looks,
+            dad_factor: skills.dad_factor,
             fantasy_football: skills.fantasy_football,
             humor: skills.humor,
-            emotional_stability: skills.emotional_stability, 
-            handiness: skills.handiness, 
-            kids: skills.kids, 
+            emotional_stability: skills.emotional_stability,
+            handiness: skills.handiness,
+            kids: skills.kids,
             stealth_food_preparation: skills.stealth_food_preparation,
-            tech: skills.tech, 
-            furniture_assembly: skills.furniture_assembly, 
+            tech: skills.tech,
+            furniture_assembly: skills.furniture_assembly,
             photography: skills.photography
           }
        });
@@ -80,10 +80,10 @@ router.post("/dad_profile/create", async function(req, res, next) {
         console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
         var user_toLink = await User.findOne({"username": req.body.username}).exec();
         user_toLink.profile.parent_profile = dad._id;
-        
+
         dad.save();
         user_toLink.save();
-        
+
         res.send(dad)
 
       } else {
@@ -148,7 +148,7 @@ router.post("/user/register", async function(req, res, next) {
 
 ///---USER:LOGIN (POST)---///
 router.post("/user/login", async function(req, res, next) {
-  
+
   try {
     console.log("/login " + req.body.username)
     var user = await User.findOne({ "username": req.body.username }).exec()
