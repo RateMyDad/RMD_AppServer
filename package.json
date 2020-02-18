@@ -4,7 +4,8 @@
   "description": "Rate My Dad App Server",
   "main": "app.js",
   "scripts": {
-    "run": "sudo node app.js"
+    "run": "sudo node app.js",
+    "runwindows": "node app.js"
   },
   "repository": {
     "type": "git",
