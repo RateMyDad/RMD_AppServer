@@ -60,7 +60,7 @@ Required body parameters:
 	},
 
 	"skills" : {
-		"grilling": 3,
+    "grilling": 3,
     "cooking": 3,
     "bags": 3,
     "softball": 3,
