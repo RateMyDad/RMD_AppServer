@@ -75,7 +75,17 @@ router.post("/dad_profile/create", async function(req, res, next) {
             tech: skills.tech,
             furniture_assembly: skills.furniture_assembly,
             photography: skills.photography
+          },
+
+          location : {
+            country: "United States",
+            region: "US-Central"
+          },
+
+          meta: {
+            rating: 0;
           }
+          
        });
 
         console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
