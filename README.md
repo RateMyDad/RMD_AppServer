@@ -61,22 +61,22 @@ Required body parameters:
 
 	"skills" : {
 		"grilling": 3,
-        "cooking": 3, 
-        "bags": 3,
-        "softball": 3,
-        "coaching": 3,
-        "generosity": 3,
-        "looks": 3,
-        "dad_factor": 3,
-        "fantasy_football": 3,
-        "humor": 3,
-        "emotional_stability": 3,
-        "handiness": 3,
-        "kids": 3,
-        "stealth_food_preparation": 3,
-        "tech": 3,
-        "furniture_assembly": 3,
-        "photography": 3
+    "cooking": 3,
+    "bags": 3,
+    "softball": 3,
+    "coaching": 3,
+    "generosity": 3,
+    "looks": 3,
+    "dad_factor": 3,
+    "fantasy_football": 3,
+    "humor": 3,
+    "emotional_stability": 3,
+    "handiness": 3,
+    "kids": 3,
+    "stealth_food_preparation": 3,
+    "tech": 3,
+    "furniture_assembly": 3,
+    "photography": 3
 	}
 
 }
