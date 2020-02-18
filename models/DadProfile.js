@@ -8,8 +8,24 @@ const DadProfileSchema = new mongoose.Schema({
   },
 
   skills: {
-    grill: Number,
-    bags: Number
+    grilling: Number,
+    cooking: Number, 
+    bags: Number, 
+    golf: Number, 
+    softball: Number, 
+    coaching: Number, 
+    generosity: Number, 
+    looks: Number, 
+    dad_factor: Number, 
+    fantasy_football: Number, 
+    humor: Number, 
+    emotional_stability: Number, 
+    handiness: Number, 
+    kids: Number, 
+    stealth_food_preparation: Number, 
+    tech: Number, 
+    furniture_assembly: Number, 
+    photography: Number 
   },
 
   location: {

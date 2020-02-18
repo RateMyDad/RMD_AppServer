@@ -1,5 +1,7 @@
 # RMD_AppServer
-To launch: npm run run
+
+To launch (UNIX): npm run run
+To launch (Windows): npm run runwindows
 
 ##**API Endpoint Descriptions**##
 
