@@ -79,7 +79,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
           res.status(400).send({message: "You already have a profile created!"});
           return false;
         }
-
+        //Test comment
         var exists = await user_exists(req.body.username);
         if(exists) {
 
