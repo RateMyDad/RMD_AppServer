@@ -56,10 +56,12 @@ router.post("/dad_profile/create", async function(req, res, next) {
             last: req.body.name.last
           },
 
-          skills : {grilling: skills.grilling * 1.5, 
+          skills : {
+            grilling: skills.grilling * 1.5, 
             cooking: skills.cooking * 2, 
             bags: skills.bags, 
             softball: skills.softball,
+            golf: skills.golf,
             coaching: skills.coaching * 1.5,
             generosity: skills.generosity * 3,
             looks: skills.looks * 1.5, 
@@ -72,7 +74,8 @@ router.post("/dad_profile/create", async function(req, res, next) {
             stealth_food_preparation: skills.stealth_food_preparation,
             tech: skills.tech * 1.5, 
             furniture_assembly: skills.furniture_assembly, 
-            photography: skills.photography},
+            photography: skills.photography
+          },
 
           location : {
             country: "United States",
