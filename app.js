@@ -38,7 +38,6 @@ async function user_exists(username) {
 ///---DAD_PROFILE:CREATE (POST)---///
 
 
-<<<<<<< HEAD
   console.log(skills); 
 
   var dad = new DadProfile({
@@ -65,68 +64,6 @@ async function user_exists(username) {
   dad.save()
   res.send(dad)
 })
-=======
-router.post("/dad_profile/create", async function(req, res, next) {
-  
-  if(req.body.username != undefined) {
-
-    if(await user_exists(req.body.username)) {
-
-      if(req.body.name.first != undefined && req.body.name.last != undefined) {
-        
-        console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last)
-        var skills = req.body.skills;
-        
-        var dad = new DadProfile({
-          
-          name: {
-            first: req.body.name.first, 
-            last: req.body.name.last
-          }, 
-          
-          skills : {
-            grilling: skills.grilling, 
-            cooking: skills.cooking, 
-            bags: skills.bags, 
-            softball: skills.softball,
-            coaching: skills.coaching,
-            generosity: skills.generosity,
-            looks: skills.looks, 
-            dad_factor: skills.dad_factor, 
-            fantasy_football: skills.fantasy_football,
-            humor: skills.humor,
-            emotional_stability: skills.emotional_stability, 
-            handiness: skills.handiness, 
-            kids: skills.kids, 
-            stealth_food_preparation: skills.stealth_food_preparation,
-            tech: skills.tech, 
-            furniture_assembly: skills.furniture_assembly, 
-            photography: skills.photography
-          }
-       });
-
-        console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
-        var user_toLink = await User.findOne({"username": req.body.username}).exec();
-        user_toLink.profile.parent_profile = dad._id;
-        
-        dad.save();
-        user_toLink.save();
-        
-        res.send(dad)
-
-      } else {
-        res.status(400).send({message: "Missing first and last name."});
-      }
-
-    } else {
-      res.status(400).send({message: "User not found."});
-    }
-
-  } else {
-    res.status(400).send({message: "Must link a profile with a username."});
-  }
-});
->>>>>>> 74694248929cc0ea23a98f461aefea7f6aa6f8c2
 
 ///---INDEX (POST)---///
 //Currently for testing, provide a dad first name in body.params and it returns a matching dad from DB
