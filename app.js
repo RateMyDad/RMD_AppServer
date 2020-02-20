@@ -51,31 +51,28 @@ router.post("/dad_profile/create", async function(req, res, next) {
         var skills = req.body.skills;
 
         var dad = new DadProfile({
-
           name: {
             first: req.body.name.first,
             last: req.body.name.last
           },
 
-          skills : {
-            grilling: skills.grilling,
-            cooking: skills.cooking,
-            bags: skills.bags,
+          skills : {grilling: skills.grilling * 1.5, 
+            cooking: skills.cooking * 2, 
+            bags: skills.bags, 
             softball: skills.softball,
-            coaching: skills.coaching,
-            generosity: skills.generosity,
-            looks: skills.looks,
-            dad_factor: skills.dad_factor,
+            coaching: skills.coaching * 1.5,
+            generosity: skills.generosity * 3,
+            looks: skills.looks * 1.5, 
+            dad_factor: skills.dad_factor * 2.5, 
             fantasy_football: skills.fantasy_football,
-            humor: skills.humor,
-            emotional_stability: skills.emotional_stability,
-            handiness: skills.handiness,
-            kids: skills.kids,
+            humor: skills.humor * 2.5,
+            emotional_stability: skills.emotional_stability * 2, 
+            handiness: skills.handiness * 3, 
+            kids: skills.kids * 3, 
             stealth_food_preparation: skills.stealth_food_preparation,
-            tech: skills.tech,
-            furniture_assembly: skills.furniture_assembly,
-            photography: skills.photography
-          },
+            tech: skills.tech * 1.5, 
+            furniture_assembly: skills.furniture_assembly, 
+            photography: skills.photography},
 
           location : {
             country: "United States",
@@ -83,7 +80,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
           },
 
           meta: {
-            rating: 0;
+            rating: 0
           }
           
        });
