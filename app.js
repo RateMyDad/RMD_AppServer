@@ -15,6 +15,7 @@ db.once('open', function(){
   console.log("established DB connection.");
 });
 
+//---Load Mongoose Models---//
 const DadProfile = require('./models/DadProfile');
 const User = require('./models/User');
 
@@ -30,6 +31,7 @@ app.use("/user/login", router);
 //Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
 
+///---HELPER FUNCTIONS---///
 async function user_exists(username) {
   var user = await User.findOne({"username": username}).exec();
   console.log("[user_exists] " + username + ": " + (user != null))
@@ -85,7 +87,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
           meta: {
             rating: 0;
           }
-          
+
        });
 
         console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
@@ -122,7 +124,6 @@ router.post("/", function(req, res, next) {
     res.send(docs)
   })
 
-  //res.render("index");
 });
 
 ///---USER:REGISTER (POST)---///
