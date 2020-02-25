@@ -95,7 +95,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
 
   } else {
 
-    User.findOne({"username": req.session.username}).exec(async function(err, result) {
+    await User.findOne({"username": req.session.username}).exec(async function(err, result) {
 
         if(result.profile.parent_profile != null) {
           res.status(400).send({message: "You already have a profile created!"});
@@ -154,10 +154,14 @@ router.post("/dad_profile/create", async function(req, res, next) {
             var user_toLink = await User.findOne({"username": req.body.username}).exec();
             user_toLink.profile.parent_profile = dad._id;
 
+            console.log("B Dad saved!");
             dad.save();
+            console.log("A Dad saved!"); 
             user_toLink.save();
 
             res.send(dad)
+
+            getRatings(); 
 
           } else {
             res.status(400).send({message: "Missing first and last name."});
@@ -167,9 +171,6 @@ router.post("/dad_profile/create", async function(req, res, next) {
           res.status(400).send({message: "User not found."});
         }
     });
-
-    // Updates ratings for all dads, although not including the dad being posted (for some reason).  
-    getRatings(); 
   }
 });
 
