@@ -38,6 +38,7 @@ async function user_exists(username) {
   return (user != null)
 }
 
+<<<<<<< HEAD
 // GET DAD RATING 
 function getRatings() {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
@@ -60,6 +61,8 @@ function getRatings() {
   })
 }
 
+=======
+>>>>>>> master
 async function getSkillScore(skills) {
   var total = 0
 
@@ -95,7 +98,11 @@ router.post("/dad_profile/create", async function(req, res, next) {
 
   } else {
 
+<<<<<<< HEAD
     await User.findOne({"username": req.session.username}).exec(async function(err, result) {
+=======
+    User.findOne({"username": req.session.username}).exec(async function(err, result) {
+>>>>>>> master
 
         if(result.profile.parent_profile != null) {
           res.status(400).send({message: "You already have a profile created!"});
@@ -110,7 +117,11 @@ router.post("/dad_profile/create", async function(req, res, next) {
             console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last)
             var skills = req.body.skills;
 
+<<<<<<< HEAD
             var skillScore = await getSkillScore(skills); 
+=======
+            var skillScore = await getSkillScore(skills);
+>>>>>>> master
 
             var dad = new DadProfile({
               name: {
@@ -154,15 +165,22 @@ router.post("/dad_profile/create", async function(req, res, next) {
             var user_toLink = await User.findOne({"username": req.body.username}).exec();
             user_toLink.profile.parent_profile = dad._id;
 
+<<<<<<< HEAD
             console.log("B Dad saved!");
             dad.save();
             console.log("A Dad saved!"); 
+=======
+            dad.save();
+>>>>>>> master
             user_toLink.save();
 
             res.send(dad)
 
+<<<<<<< HEAD
             getRatings(); 
 
+=======
+>>>>>>> master
           } else {
             res.status(400).send({message: "Missing first and last name."});
           }
@@ -226,7 +244,10 @@ router.get("/user/logout", async function(req, res, next) {
   if(req.session.username == undefined) {
     res.status(400).send({message: "You are not logged in!"});
   } else {
+<<<<<<< HEAD
     console.log("Username: " + req.session.username); 
+=======
+>>>>>>> master
     var user = req.session.username;
     req.session.destroy();
     res.status(200).send({messsage: "Sucessfully logged out " + user});
@@ -241,6 +262,7 @@ router.post("/user/login", async function(req, res, next) {
     try {
       console.log("/login " + req.body.username)
       var user = await User.findOne({ "username": req.body.username }).exec()
+<<<<<<< HEAD
 
       if(!user) {
         //User does not exist
@@ -255,6 +277,28 @@ router.post("/user/login", async function(req, res, next) {
       //If you get here, successful login
       req.session.username = req.body.username;
       return res.status(200).send(user);
+=======
+
+      if(!user) {
+        //User does not exist
+        return res.status(400).send({message: "User not found"});
+      }
+
+      if(!bcrypt.compareSync(req.body.password, user.password)) {
+        //Bad password
+        return res.status(400).send({message: "Invalid login"});
+      }
+
+      //If you get here, successful login
+      req.session.username = req.body.username;
+      return res.status(200).send(user);
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+
+    }
+>>>>>>> master
 
     } catch (error) {
       console.log(error);
