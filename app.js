@@ -25,6 +25,7 @@ app.use(session({ secret: 'peepeepoopoomommygrandma', cookie: { maxAge: 60000}, 
 //---Enable routing for configured endpoints---///
 app.use("/", router);
 app.use("/dad_profile/create", router);
+app.use("/dad_profile/ratings", router);
 app.use("/user/register", router);
 app.use("/user/login", router);
 
@@ -38,7 +39,30 @@ async function user_exists(username) {
   return (user != null)
 }
 
-// GET DAD RATING 
+router.post("/dad_profile/ratings", function(req, res, next) {
+  DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
+    if (!err) {
+      console.log(docs); 
+      var count = 1; 
+      for (var i = docs.length - 1; i >= 0; i--) {
+        docs[i].meta.rating = count; 
+        docs[i].save(); 
+        count++; 
+      }
+
+      console.log("--------------------------------------------");
+      console.log(docs); 
+
+      res.status(200).send("Successfully rated the dads!"); 
+    }
+
+    else {
+      console.log(err); 
+    }
+  })
+});
+
+/*
 function getRatings() {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
     if (!err) {
@@ -59,6 +83,7 @@ function getRatings() {
     }
   })
 }
+*/
 
 async function getSkillScore(skills) {
   var total = 0
@@ -160,8 +185,6 @@ router.post("/dad_profile/create", async function(req, res, next) {
             user_toLink.save();
 
             res.send(dad)
-
-            getRatings(); 
 
           } else {
             res.status(400).send({message: "Missing first and last name."});
