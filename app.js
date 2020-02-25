@@ -63,6 +63,10 @@ router.post("/dad_profile/ratings", function(req, res, next) {
 });
 
 /*
+=======
+<<<<<<< HEAD
+// GET DAD RATING 
+>>>>>>> 721314c729fab3a260c911285432db4c38ad7e0e
 function getRatings() {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
     if (!err) {
@@ -185,6 +189,8 @@ router.post("/dad_profile/create", async function(req, res, next) {
             user_toLink.save();
 
             res.send(dad)
+
+            getRatings(); 
 
           } else {
             res.status(400).send({message: "Missing first and last name."});
