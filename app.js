@@ -39,24 +39,24 @@ async function user_exists(username) {
 }
 
 <<<<<<< HEAD
-// GET DAD RATING 
+// GET DAD RATING
 function getRatings() {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
     if (!err) {
-      console.log(docs); 
-      var count = 1; 
+      console.log(docs);
+      var count = 1;
       for (var i = docs.length - 1; i >= 0; i--) {
-        docs[i].meta.rating = count; 
-        docs[i].save(); 
-        count++; 
+        docs[i].meta.rating = count;
+        docs[i].save();
+        count++;
       }
 
       console.log("--------------------------------------------");
-      console.log(docs); 
+      console.log(docs);
     }
 
     else {
-      console.log(err); 
+      console.log(err);
     }
   })
 }
@@ -98,11 +98,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
 
   } else {
 
-<<<<<<< HEAD
-    await User.findOne({"username": req.session.username}).exec(async function(err, result) {
-=======
     User.findOne({"username": req.session.username}).exec(async function(err, result) {
->>>>>>> master
 
         if(result.profile.parent_profile != null) {
           res.status(400).send({message: "You already have a profile created!"});
@@ -117,11 +113,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
             console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last)
             var skills = req.body.skills;
 
-<<<<<<< HEAD
-            var skillScore = await getSkillScore(skills); 
-=======
             var skillScore = await getSkillScore(skills);
->>>>>>> master
 
             var dad = new DadProfile({
               name: {
@@ -165,22 +157,14 @@ router.post("/dad_profile/create", async function(req, res, next) {
             var user_toLink = await User.findOne({"username": req.body.username}).exec();
             user_toLink.profile.parent_profile = dad._id;
 
-<<<<<<< HEAD
-            console.log("B Dad saved!");
             dad.save();
-            console.log("A Dad saved!"); 
-=======
-            dad.save();
->>>>>>> master
+
             user_toLink.save();
 
             res.send(dad)
 
-<<<<<<< HEAD
-            getRatings(); 
+            getRatings();
 
-=======
->>>>>>> master
           } else {
             res.status(400).send({message: "Missing first and last name."});
           }
@@ -212,7 +196,7 @@ router.post("/user/register", async function(req, res, next) {
   try {
 
     console.log("/register: " + req.body.username);
-    console.log("password:" + req.body.password); 
+    console.log("password:" + req.body.password);
       var user = User.findOne({ "username": req.body.username }).exec(function(err, result) {
         if(result == undefined) {
           req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -245,7 +229,7 @@ router.get("/user/logout", async function(req, res, next) {
     res.status(400).send({message: "You are not logged in!"});
   } else {
 <<<<<<< HEAD
-    console.log("Username: " + req.session.username); 
+    console.log("Username: " + req.session.username);
 =======
 >>>>>>> master
     var user = req.session.username;
