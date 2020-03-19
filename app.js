@@ -39,10 +39,9 @@ async function user_exists(username) {
   return (user != null)
 }
 
-router.post("/dad_profile/ratings", function(req, res, next) {
+router.get("/dad_profile/ratings", function(req, res, next) {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
     if (!err) {
-      console.log(docs); 
       var count = 1; 
       for (var i = docs.length - 1; i >= 0; i--) {
         docs[i].meta.rating = count; 
@@ -53,7 +52,7 @@ router.post("/dad_profile/ratings", function(req, res, next) {
       console.log("--------------------------------------------");
       console.log(docs); 
 
-      res.status(200).send("Successfully rated the dads!"); 
+      res.status(200).send(docs); 
     }
 
     else {
@@ -139,6 +138,8 @@ router.post("/dad_profile/create", async function(req, res, next) {
             console.log("[dad_profile/create] Profile creation for : " + req.body.name.first + " " + req.body.name.last)
             var skills = req.body.skills;
 
+            var zip = req.body.zip;
+
             var skillScore = await getSkillScore(skills); 
 
             var dad = new DadProfile({
@@ -166,6 +167,8 @@ router.post("/dad_profile/create", async function(req, res, next) {
                 furniture_assembly: skills.furniture_assembly,
                 photography: skills.photography
               },
+
+              zip: zip,
 
               location : {
                 country: "United States",
