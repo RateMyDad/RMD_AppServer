@@ -3,6 +3,49 @@
 To launch (UNIX): npm run run
 To launch (Windows): npm run runwindows
 
+##**Dad Profile Schema **##
+
+```{
+
+  name: {
+    first: String,
+    last: String
+  },
+
+  skills: {
+    grilling: Number,
+    cooking: Number,
+    bags: Number,
+    golf: Number,
+    softball: Number,
+    coaching: Number,
+    generosity: Number,
+    looks: Number,
+    dad_factor: Number,
+    fantasy_football: Number,
+    humor: Number,
+    emotional_stability: Number,
+    handiness: Number,
+    kids: Number,
+    stealth_food_preparation: Number,
+    tech: Number,
+    furniture_assembly: Number,
+    photography: Number
+  },
+
+  location: {
+    country: String,
+    region: String
+  },
+
+  meta: {
+    rating: Number,
+    skillScore: Number
+  }
+}
+```
+
+
 ##**API Endpoint Descriptions**##
 
 **/user/register**
