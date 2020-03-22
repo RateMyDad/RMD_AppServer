@@ -28,6 +28,8 @@ const DadProfileSchema = new mongoose.Schema({
     photography: Number
   },
 
+  zip: Number,
+
   location: {
     country: String,
     region: String
