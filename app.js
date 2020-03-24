@@ -28,6 +28,7 @@ app.use("/dad_profile/create", router);
 app.use("/dad_profile/ratings", router);
 app.use("/user/register", router);
 app.use("/user/login", router);
+app.use("/user/check_status", router);
 
 //Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
@@ -262,6 +263,23 @@ router.get("/user/logout", async function(req, res, next) {
     var user = req.session.username;
     req.session.destroy();
     res.status(200).send({messsage: "Sucessfully logged out " + user});
+  }
+})
+
+///---USER:CHECK_STATUS (GET)---///
+router.get("/user/check_status", async function(req, res, next) {
+  if (req.session.username == undefined) {
+    res.status(400).send({message: "You must be logged in to use this feature."})
+  } else {
+    await User.findOne({"username": req.session.username}).exec(async function(err, result) {
+      if(result.profile.parent_profile != null) {
+        res.status(400).send({message: "You already have a profile created!"});
+      }
+
+      else {
+        res.status(200).send({message: "Create your dad profile here."});
+      }
+    });
   }
 })
 
