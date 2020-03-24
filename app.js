@@ -263,6 +263,24 @@ router.get("/user/logout", async function(req, res, next) {
   }
 })
 
+///---USER:CHECK_STATUS (GET)---///
+router.get("/user/check_status", async function(req, res, next) {
+  if (req.session.username == undefined) {
+    res.status(400).send({message: "You must be logged in to use this feature."})
+  } else {
+    await User.findOne({"username": req.session.username}).exec(async function(err, result) {
+      if(result.profile.parent_profile != null) {
+        res.status(400).send({message: "You already have a profile created!"});
+      }
+
+      else {
+        res.status(200).send({message: "Create your dad profile here."});
+      }
+    });
+  }
+})
+
+
 ///---USER:LOGIN (POST)---///
 router.post("/user/login", async function(req, res, next) {
   if(req.session.username != undefined) {
