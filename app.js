@@ -28,6 +28,7 @@ app.use("/dad_profile/create", router);
 app.use("/dad_profile/ratings", router);
 app.use("/user/register", router);
 app.use("/user/login", router);
+app.use("/user/check_status", router);
 
 //Run server
 const server = app.listen(port, () => console.log('[STARTUP] RDM_AppServer online on port ' + port))
@@ -111,12 +112,12 @@ async function getSkillScore(skills) {
 }
 
 ///---DAD_PROFILE:CREATE (POST)---///
-
-
 router.post("/dad_profile/create", async function(req, res, next) {
+  console.log("Info before creating dad profile:");
+  console.log(req.session); 
+  console.log(req.session.username); 
 
-  if(req.session.username == undefined){
-
+  if (req.session.username == undefined){ 
     res.status(400).send({message: "You must be logged in to create a profile."});
 
   } else {
@@ -265,6 +266,8 @@ router.get("/user/logout", async function(req, res, next) {
 
 ///---USER:CHECK_STATUS (GET)---///
 router.get("/user/check_status", async function(req, res, next) {
+  console.log("Session in check_status:");
+  console.log(req.session); 
   if (req.session.username == undefined) {
     res.status(400).send({message: "You must be logged in to use this feature."})
   } else {
@@ -277,9 +280,10 @@ router.get("/user/check_status", async function(req, res, next) {
         res.status(200).send({message: "Create your dad profile here."});
       }
     });
+
+    req.session.save(); 
   }
 })
-
 
 ///---USER:LOGIN (POST)---///
 router.post("/user/login", async function(req, res, next) {
@@ -302,6 +306,9 @@ router.post("/user/login", async function(req, res, next) {
 
       //If you get here, successful login
       req.session.username = req.body.username;
+      req.session.save(); // *** ADDING THIS TO SEE IF IT WORKS ***
+      console.log("Session in login:");
+      console.log(req.session); 
       return res.status(200).send(user);
 
     } catch (error) {
