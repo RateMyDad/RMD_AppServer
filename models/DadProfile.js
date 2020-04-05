@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const DadProfileSchema = new mongoose.Schema({
+  username: String,
 
   name: {
     first: String,

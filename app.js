@@ -144,6 +144,8 @@ router.post("/dad_profile/create", async function(req, res, next) {
             var skillScore = await getSkillScore(skills); 
 
             var dad = new DadProfile({
+              username: req.session.username,
+
               name: {
                 first: req.body.name.first,
                 last: req.body.name.last
