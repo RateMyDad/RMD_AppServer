@@ -115,10 +115,10 @@ async function getSkillScore(skills) {
 ///---DAD_PROFILE:CREATE (POST)---///
 router.post("/dad_profile/create", async function(req, res, next) {
   console.log("Info before creating dad profile:");
-  console.log(req.session);
-  console.log(req.session.username);
+  console.log(req.session); 
+  console.log(req.session.username); 
 
-  if (req.session.username == undefined){
+  if (req.session.username == undefined){ 
     res.status(400).send({message: "You must be logged in to create a profile."});
 
   } else {
@@ -130,7 +130,7 @@ router.post("/dad_profile/create", async function(req, res, next) {
           return false;
         }
         //Test comment
-        var exists = await user_exists(req.session.username);
+        var exists = await user_exists(req.body.username);
         if(exists) {
 
           if(req.body.name.first != undefined && req.body.name.last != undefined) {
@@ -140,9 +140,11 @@ router.post("/dad_profile/create", async function(req, res, next) {
 
             var zip = req.body.zip;
 
-            var skillScore = await getSkillScore(skills);
+            var skillScore = await getSkillScore(skills); 
 
             var dad = new DadProfile({
+              username: req.session.username,
+
               name: {
                 first: req.body.name.first,
                 last: req.body.name.last
@@ -182,18 +184,18 @@ router.post("/dad_profile/create", async function(req, res, next) {
 
            });
 
-            console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.session.username);
-            var user_toLink = await User.findOne({"username": req.session.username}).exec();
+            console.log("[dad_profile/create] Linking profile {" + req.body.name.first + " " + req.body.name.last + "} to user " + req.body.username);
+            var user_toLink = await User.findOne({"username": req.body.username}).exec();
             user_toLink.profile.parent_profile = dad._id;
 
             console.log("B Dad saved!");
             dad.save();
-            console.log("A Dad saved!");
+            console.log("A Dad saved!"); 
             user_toLink.save();
 
             res.send(dad)
 
-            getRatings();
+            getRatings(); 
 
           } else {
             res.status(400).send({message: "Missing first and last name."});
