@@ -6,7 +6,6 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
 var config = require('./config')
-var session = require('express-session');
 var jwt = require('jsonwebtoken');
 
 const port = 82;
@@ -28,7 +27,6 @@ const User = require('./models/User');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(session({ secret: 'peepeepoopoomommygrandma', cookie: { maxAge: 60000}, username: undefined}));
 //---Enable routing for configured endpoints---///
 app.use("/", router);
 app.use("/user/register", router);
@@ -68,14 +66,6 @@ function genJti() {
   }
 
   return jti;
-}
-
-
-///---HELPER FUNCTIONS---///
-async function user_exists(username) {
-  var user = await User.findOne({"username": username}).exec();
-  console.log("[user_exists] " + username + ": " + (user != null))
-  return (user != null)
 }
 
 ///---USER:REGISTER (POST)---///
@@ -125,27 +115,6 @@ router.get("/user/logout", async function(req, res, next) {
     var user = req.session.username;
     req.session.destroy();
     res.status(200).send({messsage: "Sucessfully logged out " + user});
-  }
-})
-
-///---USER:CHECK_STATUS (GET)---///
-router.get("/user/check_status", async function(req, res, next) {
-  console.log("Session in check_status:");
-  console.log(req.session);
-  if (req.session.username == undefined) {
-    res.status(400).send({message: "You must be logged in to use this feature."})
-  } else {
-    await User.findOne({"username": req.session.username}).exec(async function(err, result) {
-      if(result.profile.parent_profile != null) {
-        res.status(400).send({message: "You already have a profile created!"});
-      }
-
-      else {
-        res.status(200).send({message: "Create your dad profile here."});
-      }
-    });
-
-    req.session.save();
   }
 })
 
