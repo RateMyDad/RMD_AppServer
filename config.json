@@ -1,0 +1,5 @@
+{
+  "secret" : "h5h8hvnv4h4hckjen23!",
+  "audience" : "nodejs-jwt-auth",
+  "issuer" : "http://ratemydad.io"
+}
