@@ -24,6 +24,12 @@ function requireScope(scope) {
   };
 }
 
+async function user_exists(username) {
+  var user = await User.findOne({"username": username}).exec();
+  console.log("[user_exists] " + username + ": " + (user != null))
+  return (user != null)
+}
+
 function getRatings() {
   DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
     if (!err) {
@@ -43,40 +49,11 @@ function getRatings() {
   })
 }
 
-async function user_exists(username) {
-  var user = await User.findOne({"username": username}).exec();
-  console.log("[user_exists] " + username + ": " + (user != null))
-  return (user != null)
-}
-
 
 app.use('/api/protected', jwtCheck, requireScope('full_access'));
 
 app.get('/api/protected/test', function(req, res) {
   res.status(200).send("Heyo");
-});
-
-
-app.get("/api/protected/dad_profile/ratings", function(req, res, next) {
-  DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
-    if (!err) {
-      var count = 1;
-      for (var i = docs.length - 1; i >= 0; i--) {
-        docs[i].meta.rating = count;
-        docs[i].save();
-        count++;
-      }
-
-      console.log("--------------------------------------------");
-      console.log(docs);
-
-      res.status(200).send(docs);
-    }
-
-    else {
-      console.log(err);
-    }
-  })
 });
 
 async function getSkillScore(skills) {

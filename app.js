@@ -32,6 +32,7 @@ app.use("/", router);
 app.use("/user/register", router);
 app.use("/user/login", router);
 app.use("/user/check_status", router);
+app.use("/api/dad_profile/ratings", router)
 app.use(require("./protected_routes"));
 
 //---AUTH SCHTUFF---///
@@ -41,7 +42,7 @@ function createIdToken(user) {
     username: user.username,
     aud: config.audience,
     iss: config.issuer
-  }, config.secret, { expiresIn: '5h' });
+  }, config.secret, { expiresIn: '6h' });
   return tok
 }
 
@@ -104,6 +105,28 @@ router.post("/user/register", async function(req, res, next) {
 
   }
 
+});
+
+router.get("/api/dad_profile/ratings", function(req, res, next) {
+  DadProfile.find({}).sort('meta.skillScore').exec(function(err, docs) {
+    if (!err) {
+      var count = 1;
+      for (var i = docs.length - 1; i >= 0; i--) {
+        docs[i].meta.rating = count;
+        docs[i].save();
+        count++;
+      }
+
+      console.log("--------------------------------------------");
+      console.log(docs);
+
+      res.status(200).send(docs);
+    }
+
+    else {
+      console.log(err);
+    }
+  })
 });
 
 ///---USER:LOGOUT (GET)---///
